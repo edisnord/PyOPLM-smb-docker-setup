@@ -42,7 +42,7 @@ if ($args.Get(0) -eq "add") {
         $mounts.Add(("-v", "${src_file}:/$filename"))
         if ($filename -match "\.[cC][uU][eE]$")
         {
-            Select-String -path $src_file -pattern '\"(.*.bin)\"' | 
+            Select-String -path $src_file -pattern '\"(.*.bin)\"' |
                 ForEach-Object {
                     $bin_src = Join-Path $(Split-Path -Path $src_file) $_.Matches[0].Groups[1]
                     $escaped_path = [WildcardPattern]::Escape($bin_src)
@@ -52,10 +52,10 @@ if ($args.Get(0) -eq "add") {
                     } else {
                         Crash "Bin file $bin_src listed in the Cue file $filename does not exist" 3
                     }
-                       
+
                 }
         }
-        
+
         docker compose run @mounts pyoplm add @newArgs "/$filename"
     }
 }
@@ -63,7 +63,4 @@ else {
     WorkdirToCompose
     docker compose run pyoplm @args
 }
-
-Write-Host "Deleting leftover containers..."
-$containers = docker container ls -a --filter="name=pyoplm-run" --format="{{.ID}}"
-docker container rm @containers
+docker container rm $(docker container ls -a --filter="name=pyoplm-run" --format="{{.ID}}") | Out-Null
