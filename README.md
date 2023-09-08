@@ -9,7 +9,7 @@ Environment variables (to be supplied in a .env file at the root of this repo):
 ## Usage
 
 There are two scripts, one is a Bash script (pyoplm.sh) and one is a PowerShell script
-(pyoplm.ps1) for Windows users. You can interact with those scripts as if you are interacting
+(pyoplm.ps1) for Windows users. If you want to have the command `pyoplm` added to your PowerShell terminals as an Alias in Windows so you can use it on your terminal without referencing the script, run the file `install.ps1`. You can interact with those scripts as if you are interacting
 with PyOPLM. Make sure to not put them in a directory different from the one where the
 PyOPLM image and the docker-compose.yml file is located, as they depend on them being in
 the same directory.
