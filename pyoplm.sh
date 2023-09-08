@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+MOUNTS=()
+
+function add_mount {
+    MOUNTS+=("-v")
+    MOUNTS+=("${1}:/$2")
+}
+
 function workdir_to_compose {
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     cd $DIR
@@ -17,7 +24,7 @@ if [ "$1" = "add" ]; then
 
     for var in "$@"; do
         if [ "${var:0:1}" == "-" ]; then
-            ARGS+=$var
+            ARGS+=($var)
         elif [ "${var:0:1}" == "/" ]; then
             if [ ! -f "$var" ]; then
                 crash "Input file $var does not exist" 2
@@ -41,11 +48,23 @@ if [ "$1" = "add" ]; then
     done
 
     workdir_to_compose
+
     if [ -z "$SRC_FILE" ]; then
         docker compose run pyoplm add "${ARGS[@]}"
     else
         FILENAME=$(basename "$SRC_FILE")
-        docker compose run -v "$SRC_FILE:/$FILENAME" pyoplm add "${ARGS[@]}" "/$FILENAME"
+        add_mount "$SRC_FILE" "$FILENAME"
+
+        echo $FILENAME
+        if [[ $FILENAME =~ \.(c|C)(u|U)(e|E)$ ]]; then
+            while read line; do
+                if [[ "$line" =~ \"(.*\.bin)\" ]]; then
+                    add_mount "$(dirname "$SRC_FILE")/${BASH_REMATCH[1]}" "${BASH_REMATCH[1]}"
+                fi
+            done < "$SRC_FILE"
+        fi
+
+        docker compose run "${MOUNTS[@]}" pyoplm add "${ARGS[@]}" "/$FILENAME"
     fi
 else
     workdir_to_compose
