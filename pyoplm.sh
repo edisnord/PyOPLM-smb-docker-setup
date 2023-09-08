@@ -51,3 +51,6 @@ else
     workdir_to_compose
     docker compose run pyoplm $@
 fi
+
+echo "Deleting leftover containers..."
+docker rm $(docker stop $(docker container ls -a --filter="name=pyoplm-run" --format="{{.ID}}"))

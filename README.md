@@ -3,7 +3,7 @@ A docker-compose setup for running an SMB server and PyOPLM side by side, with P
 
 Environment variables (to be supplied in a .env file at the root of this repo):
 - INPUT: Default arguments to be passed to PyOPLM on container run
-- SMB_PORT: Port on which the SMB server will be exposed at on the host device
+- SMB_PORT: Port on which the SMB server will be exposed at on the host device (1445 by default, 445 is the usual SMB port but exposing that one will require admin permissions)
 - OPL_SMB_DIR: The Open PS2 Loader base directory located on your system
 
 ## Usage
@@ -20,3 +20,5 @@ the same directory.
 Currently limited to online storages, local storage will require you to mount your local storage
 directory on the PyOPLM container, then make your pyoplm.ini in the OPL directory point
 to where you mounted your storage.
+
+# Bintools also do not work (at the moment, support can be added)
