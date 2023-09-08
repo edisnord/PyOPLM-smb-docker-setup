@@ -1,0 +1,28 @@
+services:
+  ps2smb:
+    image: edisnord/ps2smb-server:2
+    ports:
+      - "${SMB_PORT}:445"
+    volumes:
+      - type: bind
+        source: $OPL_SMB_DIR
+        target: /mount
+    networks:
+      - opl_smb_network
+
+  pyoplm:
+    depends_on:
+      - ps2smb
+    build: ./PyOPLM-image
+    networks:
+      - opl_smb_network
+    command: $INPUT
+    volumes:
+      - type: bind
+        source: $OPL_SMB_DIR
+        target: /mnt
+    environment:
+        PYOPLM_OPL_DIR: /mnt
+
+networks:
+  opl_smb_network:
