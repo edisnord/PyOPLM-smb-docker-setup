@@ -14,3 +14,9 @@ with PyOPLM, and they will manage both starting the SMB server and managing your
 directory. Make sure to not put them in a directory different from the one where the
 PyOPLM image and the docker-compose.yml file is located, as they depend on them being in
 the same directory.
+
+## Artwork storage support
+
+Currently limited to online storages, local storage will require you to mount your local storage
+directory on the PyOPLM container, then make your pyoplm.ini in the OPL directory point
+to where you mounted your storage.
