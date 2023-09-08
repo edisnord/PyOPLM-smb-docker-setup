@@ -10,7 +10,7 @@ function crash {
     exit $2
 }
 
-if [ $1 = "add" ]; then
+if [ "$1" = "add" ]; then
     ARGS=()
     SRC_FILE=""
     shift
