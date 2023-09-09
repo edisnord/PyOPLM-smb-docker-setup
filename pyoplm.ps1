@@ -2,6 +2,8 @@
 
 $env:COMPOSE_CONVERT_WINDOWS_PATHS = 1
 
+$workdir = Get-Location
+
 function WorkdirToCompose {
     Set-Location $PSScriptRoot
 }
@@ -25,7 +27,7 @@ if ($args.Get(0) -eq "add") {
             $newArgs.Add($args.Get($i))
         }
         elseif (Test-Path $args.Get($i)) {
-            $src_file = [IO.Path]::GetFullPath($args.Get($i))
+            $src_file = Resolve-Path $args.Get($i)
         }
         else {
             Crash "Unknown parameter $($args.Get($i)), not an existing file" 2
@@ -64,3 +66,5 @@ else {
     docker compose run pyoplm @args
 }
 docker container rm $(docker container ls -a --filter="name=pyoplm-run" --format="{{.ID}}") | Out-Null
+
+Set-Location $workdir
