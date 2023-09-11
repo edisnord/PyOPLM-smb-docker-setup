@@ -16,6 +16,8 @@ the same directory.
 
 To run a containerized SMB server, just run `docker compose up ps2smb`, but you need to disable `lanmanservice` on Windows and reboot your PC to run the container at port 445. This service handles file sharing and remote printing, so disabling it will ultimately make those things not work until enabled again. The variable OPL_SMB_DIR in the .env file is both taken into account by PyOPLM as the opl directory and the SMB server as the directory to share with the PS2.
 
+Remember to occasionally rebuild the image for PyOPLM using the `pyoplm update` command as the program is under active development and improvements, features and bugfixes may be added in future versions. If you don't rebuild the image you will only have the version of PyOPLM which you downloaded the first time the run script ran.
+
 ## Artwork storage support
 
 Currently limited to online storages, local storage will require you to mount your local storage

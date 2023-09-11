@@ -61,6 +61,11 @@ if ($args.Get(0) -eq "add") {
         docker compose run @mounts pyoplm add @newArgs "/$filename"
     }
 }
+elseif ($args.Get(0) = "update") {
+    Write-Host "Rebuilding PyOPLM image..."
+    docker compose build --no-cache pyoplm
+    exit 0
+}
 else {
     WorkdirToCompose
     docker compose run pyoplm @args

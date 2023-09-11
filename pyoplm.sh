@@ -66,6 +66,10 @@ if [ "$1" = "add" ]; then
 
         docker compose run "${MOUNTS[@]}" pyoplm add "${ARGS[@]}" "/$FILENAME"
     fi
+elif [ $1 = "update" ]; then
+    echo "Rebuilding PyOPLM image..."
+    docker compose build --no-cache pyoplm
+    exit 0
 else
     workdir_to_compose
     docker compose run pyoplm $@

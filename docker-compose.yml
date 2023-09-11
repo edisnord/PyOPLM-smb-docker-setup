@@ -1,6 +1,6 @@
 services:
   ps2smb:
-    image: edisnord/ps2smb-server:2
+    image: edisnord/ps2smb-server:3
     ports:
       - "${SMB_PORT}:445"
     volumes:
