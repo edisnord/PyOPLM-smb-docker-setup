@@ -13,10 +13,15 @@ function Crash {
     exit $args.Get(1)
 }
 
+function CleanupAndExit {
+    docker container rm $(docker container ls -a --filter="name=pyoplm-run" --format="{{.ID}}") | Out-Null 
+    exit 0
+}
+
 if ($args.Length -eq 0) {
     WorkdirToCompose
     docker compose run pyoplm
-    exit 0
+    CleanupAndExit
 }
 
 if ($args.Get(0) -eq "add") {
@@ -70,6 +75,7 @@ else {
     WorkdirToCompose
     docker compose run pyoplm @args
 }
-docker container rm $(docker container ls -a --filter="name=pyoplm-run" --format="{{.ID}}") | Out-Null
+
+CleanupAndExit
 
 Set-Location $workdir
